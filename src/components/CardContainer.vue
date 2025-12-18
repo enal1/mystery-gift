@@ -248,7 +248,7 @@ const flipSound = ref(null)
 const touchStartX = ref(0)
 const touchStartY = ref(0)
 const isTouching = ref(false)
-const isTouchEvent = ref(false)
+const isTouchEvent = ref(false) // 用于跟踪最后一个事件是否为触摸事件
 
 // 提示弹窗
 const popups = ref([])
