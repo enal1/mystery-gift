@@ -1,0 +1,654 @@
+/* 全局样式 */
+:root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --subtext: #4d4d4d;
+  --border: #e5e5e5;
+  --shadow: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-heavy: 0 20px 48px rgba(0,0,0,0.16);
+  --overlay: rgba(0, 0, 0, 0.4);
+  --accent: #0078d4; /* Windows 蓝 */
+  /* 贺卡主题色 */
+  --birthday-primary: #ff5252;
+  --birthday-secondary: #ffe082;
+  --birthday-tertiary: #ffccbc;
+  --holiday-primary: #00acc1;
+  --holiday-secondary: #80deea;
+  --holiday-tertiary: #b2ebf2;
+  --thankyou-primary: #66bb6a;
+  --thankyou-secondary: #ffeeba;
+  --thankyou-tertiary: #d4edda;
+  --love-primary: #f44336;
+  --love-secondary: #ffcdd2;
+  --love-tertiary: #f8bbd0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 50%, #dfe7f0 100%);
+  color: var(--text);
+  font-family: "Noto Sans SC", Segoe UI, system-ui, -apple-system, Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  overflow: hidden;
+}
+
+/* 添加发光效果 - 进一步减弱 */
+.card-front h2 {
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.5);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+/* 霓虹文字效果 - 进一步减弱 */
+.birthday-card .card-back h3 {
+  text-shadow: 
+    0 0 2px var(--birthday-primary);
+  font-weight: 600;
+}
+
+.holiday-card .card-back h3 {
+  text-shadow: 
+    0 0 2px var(--holiday-primary);
+  font-weight: 600;
+}
+
+.thankyou-card .card-back h3 {
+  text-shadow: 
+    0 0 2px var(--thankyou-primary);
+  font-weight: 600;
+}
+
+.love-card .card-back h3 {
+  text-shadow: 
+    0 0 2px var(--love-primary);
+  font-weight: 600;
+}
+
+.card-back p {
+  text-shadow: none;
+  font-weight: 400;
+  font-size: 17px;
+  color: var(--text);
+}
+
+/* 卡片正面提示文字 - 进一步减弱 */
+.card-front p {
+  text-shadow: none;
+  font-weight: 500;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* 移除透明文字渐变效果，提高可读性 */
+.birthday-card .card-back h3 {
+  color: var(--birthday-primary);
+}
+
+.holiday-card .card-back h3 {
+  color: var(--holiday-primary);
+}
+
+.thankyou-card .card-back h3 {
+  color: var(--thankyou-primary);
+}
+
+.love-card .card-back h3 {
+  color: var(--love-primary);
+}
+
+/* 背景渐变叠加和纹理 */
+.card-front::before,
+.card-back::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background: 
+    radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.08) 100%),
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
+  pointer-events: none;
+}
+
+/* 为卡片添加动态纹理 */
+.card-front::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background: repeating-conic-gradient(from 0deg at 20% 50%, transparent 0deg 10deg, rgba(255,255,255,0.02) 10deg 20deg);
+  pointer-events: none;
+  animation: rotate 20s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 装饰边框 - 移除边框 */
+.card-front {
+  border: none;
+  box-shadow: 
+    0 0 40px rgba(255, 255, 255, 0.7), 
+    inset 0 0 40px rgba(255, 255, 255, 0.3),
+    0 0 80px rgba(255, 255, 255, 0.5),
+    0 0 120px rgba(255, 255, 255, 0.2);
+}
+
+.card-back {
+  border: none;
+  box-shadow: 
+    0 0 30px rgba(0, 0, 0, 0.25),
+    0 0 60px rgba(0, 0, 0, 0.15);
+}
+
+/* 为每个主题添加独特的效果 - 移除边框 */
+.birthday-card .card-front {
+  border-image: none;
+  box-shadow: 
+    0 0 40px rgba(255, 82, 82, 0.5), 
+    inset 0 0 30px rgba(255, 224, 130, 0.3),
+    0 0 80px rgba(255, 82, 82, 0.3);
+}
+
+.holiday-card .card-front {
+  border-image: none;
+  box-shadow: 
+    0 0 40px rgba(0, 172, 193, 0.5), 
+    inset 0 0 30px rgba(128, 222, 234, 0.3),
+    0 0 80px rgba(0, 172, 193, 0.3);
+}
+
+.thankyou-card .card-front {
+  border-image: none;
+  box-shadow: 
+    0 0 40px rgba(102, 187, 106, 0.5), 
+    inset 0 0 30px rgba(255, 238, 186, 0.3),
+    0 0 80px rgba(102, 187, 106, 0.3);
+}
+
+.love-card .card-front {
+  border-image: none;
+  box-shadow: 
+    0 0 40px rgba(244, 67, 54, 0.5), 
+    inset 0 0 30px rgba(255, 205, 210, 0.3),
+    0 0 80px rgba(244, 67, 54, 0.3);
+}
+
+/* 生日贺卡样式 */
+.birthday-card .card-front {
+  background: linear-gradient(135deg, var(--birthday-primary) 0%, var(--birthday-secondary) 50%, var(--birthday-tertiary) 100%);
+  color: white;
+}
+
+.birthday-card .card-back {
+  background: linear-gradient(135deg, white 0%, var(--birthday-tertiary) 100%);
+  color: var(--birthday-primary);
+  border: none;
+  box-shadow: 
+    0 0 20px rgba(255, 82, 82, 0.3),
+    0 0 40px rgba(255, 82, 82, 0.15);
+}
+
+/* 节日贺卡样式 */
+.holiday-card .card-front {
+  background: linear-gradient(135deg, var(--holiday-primary) 0%, var(--holiday-secondary) 50%, var(--holiday-tertiary) 100%);
+  color: white;
+}
+
+.holiday-card .card-back {
+  background: linear-gradient(135deg, white 0%, var(--holiday-tertiary) 100%);
+  color: var(--holiday-primary);
+  border: none;
+  box-shadow: 
+    0 0 20px rgba(0, 172, 193, 0.3),
+    0 0 40px rgba(0, 172, 193, 0.15);
+}
+
+/* 感谢贺卡样式 */
+.thankyou-card .card-front {
+  background: linear-gradient(135deg, var(--thankyou-primary) 0%, var(--thankyou-secondary) 50%, var(--thankyou-tertiary) 100%);
+  color: white;
+}
+
+.thankyou-card .card-back {
+  background: linear-gradient(135deg, white 0%, var(--thankyou-tertiary) 100%);
+  color: var(--thankyou-primary);
+  border: none;
+  box-shadow: 
+    0 0 20px rgba(102, 187, 106, 0.3),
+    0 0 40px rgba(102, 187, 106, 0.15);
+}
+
+/* 爱情贺卡样式 */
+.love-card .card-front {
+  background: linear-gradient(135deg, var(--love-primary) 0%, var(--love-secondary) 50%, var(--love-tertiary) 100%);
+  color: white;
+}
+
+.love-card .card-back {
+  background: linear-gradient(135deg, white 0%, var(--love-tertiary) 100%);
+  color: var(--love-primary);
+  border: none;
+  box-shadow: 
+    0 0 20px rgba(244, 67, 54, 0.3),
+    0 0 40px rgba(244, 67, 54, 0.15);
+}
+
+/* 贺卡装饰元素动画 */
+.birthday-cake {
+  font-size: 80px;
+  animation: bounce 2s infinite;
+  will-change: transform;
+}
+
+.christmas-tree {
+  font-size: 80px;
+  animation: sway 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+.thankyou-icon {
+  font-size: 80px;
+  animation: pulse 2s infinite;
+  will-change: transform;
+}
+
+.love-hearts {
+  font-size: 80px;
+  animation: heartbeat 1.5s infinite;
+  will-change: transform;
+}
+
+/* 装饰动画 - 优化性能，使用GPU加速 */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateZ(0); }
+  40% { transform: translateY(-20px) translateZ(0); }
+  60% { transform: translateY(-10px) translateZ(0); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-5deg) translateZ(0); }
+  50% { transform: rotate(5deg) translateZ(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1) translateZ(0); }
+  50% { transform: scale(1.1) translateZ(0); }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1) translateZ(0); }
+  14% { transform: scale(1.1) translateZ(0); }
+  28% { transform: scale(1) translateZ(0); }
+  42% { transform: scale(1.1) translateZ(0); }
+  70% { transform: scale(1) translateZ(0); }
+}
+
+/* 装饰元素 - 雪花 */
+.snowflakes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.snowflake {
+  position: absolute;
+  color: white;
+  font-size: 20px;
+  animation: fall linear infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+/* 简化雪花动画，只使用一种动画类型 */
+@keyframes fall {
+  0% { 
+    transform: translateY(-100vh) translateX(0) rotate(0deg); 
+    opacity: 0; 
+  }
+  10% { opacity: 1; }
+  50% { transform: translateY(50vh) translateX(10px) rotate(180deg); }
+  90% { opacity: 1; }
+  100% { 
+    transform: translateY(100vh) translateX(-10px) rotate(360deg); 
+    opacity: 0; 
+  }
+}
+
+/* 装饰元素 - 心形 */
+.hearts {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heart {
+  position: absolute;
+  color: var(--love-primary);
+  font-size: 20px;
+  animation: float 3s ease-in-out infinite;
+  /* 移除阴影滤镜，减少GPU负担 */
+  will-change: transform, opacity;
+}
+
+/* 简化心形动画，只使用一种动画类型 */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0) translateX(0) scale(1) rotate(0deg); 
+    opacity: 0.7; 
+  }
+  25% { 
+    transform: translateY(-20px) translateX(5px) scale(1.1) rotate(3deg); 
+    opacity: 0.9; 
+  }
+  50% { 
+    transform: translateY(-15px) translateX(0) scale(1.2) rotate(0deg); 
+    opacity: 1; 
+  }
+  75% { 
+    transform: translateY(-20px) translateX(-5px) scale(1.1) rotate(-3deg); 
+    opacity: 0.9; 
+  }
+}
+
+/* 装饰元素 - 闪光 */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sparkle {
+  position: absolute;
+  color: gold;
+  font-size: 20px;
+  animation: sparkle 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.6)); /* 简化滤镜效果 */
+  will-change: transform, opacity;
+}
+
+/* 简化闪光动画，只使用一种动画类型 */
+@keyframes sparkle {
+  0%, 100% { 
+    transform: scale(0) rotate(0deg) translateZ(0); 
+    opacity: 0; 
+  }
+  50% { 
+    transform: scale(1.2) rotate(180deg) translateZ(0); 
+    opacity: 1; 
+  }
+}
+
+/* 装饰元素 - 彩纸 */
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 30px;
+  background-color: var(--birthday-secondary);
+  animation: confetti-fall 3s ease-in-out infinite;
+  filter: drop-shadow(0 1px 5px rgba(0, 0, 0, 0.2)); /* 简化滤镜效果 */
+  opacity: 0.95;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* 简化彩纸动画，只使用一种动画类型 */
+.confetti-piece:nth-child(2n) {
+  background-color: var(--birthday-primary);
+}
+
+.confetti-piece:nth-child(3n) {
+  background-color: #4ecdc4;
+}
+
+.confetti-piece:nth-child(4n) {
+  background-color: #f9ca24;
+}
+
+.confetti-piece:nth-child(5n) {
+  background-color: #6c5ce7;
+}
+
+@keyframes confetti-fall {
+  0% { 
+    transform: translateY(-100vh) rotate(0deg); 
+    opacity: 1; 
+  }
+  25% { 
+    transform: translateY(25vh) translateX(10px) rotate(90deg); 
+  }
+  50% { 
+    transform: translateY(50vh) translateX(-5px) rotate(180deg); 
+  }
+  75% { 
+    transform: translateY(75vh) translateX(5px) rotate(270deg); 
+  }
+  100% { 
+    transform: translateY(100vh) translateX(-5px) rotate(360deg); 
+    opacity: 0; 
+  }
+}
+
+/* 装饰元素 - 气泡 */
+.bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bubble {
+  position: absolute;
+  color: white;
+  font-size: 20px;
+  animation: bubble-rise 4s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+/* 气泡上升动画 */
+@keyframes bubble-rise {
+  0% { 
+    transform: translateY(100vh) translateX(0) scale(0.8) rotate(0deg); 
+    opacity: 0; 
+  }
+  10% { opacity: 0.8; }
+  50% { 
+    transform: translateY(50vh) translateX(30px) scale(1) rotate(180deg); 
+    opacity: 1; 
+  }
+  90% { opacity: 0.8; }
+  100% { 
+    transform: translateY(-10vh) translateX(-20px) scale(0.8) rotate(360deg); 
+    opacity: 0; 
+  }
+}
+
+/* 装饰元素 - 星星 */
+.stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  color: gold;
+  font-size: 20px;
+  animation: star-twinkle 6s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+/* 星星闪烁动画 */
+@keyframes star-twinkle {
+  0% { 
+    transform: translateY(-10vh) translateX(0) scale(0.8) rotate(0deg); 
+    opacity: 0.3; 
+  }
+  20% { 
+    transform: translateY(20vh) translateX(20px) scale(1.2) rotate(90deg); 
+    opacity: 1; 
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  }
+  40% { 
+    transform: translateY(40vh) translateX(0) scale(1) rotate(180deg); 
+    opacity: 0.6; 
+  }
+  60% { 
+    transform: translateY(60vh) translateX(-20px) scale(1.2) rotate(270deg); 
+    opacity: 1; 
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  }
+  80% { 
+    transform: translateY(80vh) translateX(0) scale(0.8) rotate(360deg); 
+    opacity: 0.6; 
+  }
+  100% { 
+    transform: translateY(110vh) translateX(10px) scale(0.8) rotate(360deg); 
+    opacity: 0.3; 
+  }
+}
+
+/* 装饰元素 - 花瓣 */
+.petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  color: #ff6b9d;
+  font-size: 20px;
+  animation: petal-fall 5s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+  animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+/* 花瓣飘落动画 */
+@keyframes petal-fall {
+  0% { 
+    transform: translateY(-10vh) translateX(0) rotate(0deg); 
+    opacity: 0; 
+  }
+  10% { opacity: 1; }
+  33% { 
+    transform: translateY(30vh) translateX(30px) rotate(45deg); 
+    opacity: 1; 
+  }
+  66% { 
+    transform: translateY(60vh) translateX(-20px) rotate(-45deg); 
+    opacity: 1; 
+  }
+  90% { opacity: 0.8; }
+  100% { 
+    transform: translateY(110vh) translateX(10px) rotate(0deg); 
+    opacity: 0; 
+  }
+}
+
+/* 装饰元素 - 萤火虫 */
+.fireflies {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.firefly {
+  position: absolute;
+  color: #ffeb3b;
+  font-size: 20px;
+  animation: firefly-fly 5s ease-in-out infinite;
+  text-shadow: 0 0 15px rgba(255, 235, 59, 0.8);
+  filter: drop-shadow(0 0 10px rgba(255, 235, 59, 0.6));
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+/* 萤火虫飞舞动画 */
+@keyframes firefly-fly {
+  0% { 
+    transform: translateY(20vh) translateX(0) scale(0.8) rotate(0deg); 
+    opacity: 0.3;
+    filter: drop-shadow(0 0 5px rgba(255, 235, 59, 0.4));
+  }
+  15% { 
+    transform: translateY(15vh) translateX(15px) scale(1) rotate(90deg); 
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(255, 235, 59, 0.9));
+  }
+  30% { 
+    transform: translateY(25vh) translateX(0) scale(0.9) rotate(180deg); 
+    opacity: 0.6;
+    filter: drop-shadow(0 0 8px rgba(255, 235, 59, 0.6));
+  }
+  45% { 
+    transform: translateY(10vh) translateX(-20px) scale(1.1) rotate(270deg); 
+    opacity: 0.9;
+    filter: drop-shadow(0 0 12px rgba(255, 235, 59, 0.8));
+  }
+  60% { 
+    transform: translateY(30vh) translateX(-5px) scale(0.8) rotate(360deg); 
+    opacity: 0.4;
+    filter: drop-shadow(0 0 6px rgba(255, 235, 59, 0.5));
+  }
+  75% { 
+    transform: translateY(5vh) translateX(10px) scale(1.2) rotate(45deg); 
+    opacity: 1;
+    filter: drop-shadow(0 0 18px rgba(255, 235, 59, 1));
+  }
+  90% { 
+    transform: translateY(35vh) translateX(-15px) scale(0.9) rotate(135deg); 
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px rgba(255, 235, 59, 0.7));
+  }
+  100% { 
+    transform: translateY(20vh) translateX(0) scale(0.8) rotate(0deg); 
+    opacity: 0.3;
+    filter: drop-shadow(0 0 5px rgba(255, 235, 59, 0.4));
+  }
+}
