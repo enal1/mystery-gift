@@ -248,6 +248,7 @@ const flipSound = ref(null)
 const touchStartX = ref(0)
 const touchStartY = ref(0)
 const isTouching = ref(false)
+const isTouchEvent = ref(false)
 
 // 提示弹窗
 const popups = ref([])
@@ -349,6 +350,9 @@ const playFlipSound = () => {
 
 // 贺卡翻页处理
 const handleCardClick = () => {
+  // 如果最近的事件是触摸事件，不处理点击事件
+  if (isTouchEvent.value) return
+  
   isFlipped.value = !isFlipped.value
   playFlipSound()
   
@@ -378,6 +382,13 @@ const handleTouchEnd = (e) => {
   if (!isTouching.value) return
   
   isTouching.value = false
+  isTouchEvent.value = true
+  
+  // 设置定时器在300ms后重置touch事件标记
+  setTimeout(() => {
+    isTouchEvent.value = false
+  }, 300)
+  
   const touchEndX = e.changedTouches[0].clientX
   const touchEndY = e.changedTouches[0].clientY
   const deltaX = touchEndX - touchStartX.value
@@ -403,8 +414,14 @@ const handleTouchEnd = (e) => {
       }
     }
   } else {
-    // 点击或垂直滑动，使用默认的点击翻转逻辑
-    handleCardClick()
+    // 点击或垂直滑动，直接翻转卡片
+    isFlipped.value = !isFlipped.value
+    playFlipSound()
+    
+    // 如果是第一次点击，播放音乐
+    if (!isMusicPlaying.value) {
+      playBackgroundMusic()
+    }
   }
 }
 
@@ -590,6 +607,8 @@ onUnmounted(() => {
   perspective: 1000px;
   cursor: pointer;
   user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .card-inner {
