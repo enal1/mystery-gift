@@ -620,6 +620,7 @@ onUnmounted(() => {
   transform-style: preserve-3d;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
+  background-color: white;
 }
 
 .card.flipped .card-inner {
