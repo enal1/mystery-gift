@@ -5,7 +5,7 @@
         <span class="icon">🎁</span>
         <span class="title" id="modal-title">神秘贺卡</span>
       </div>
-      <div class="content">请神经选择一张贺卡：</div>
+      <div class="content">请杨大美女选择一张贺卡：</div>
       <div class="card-templates">
         <div 
           v-for="template in templates" 
