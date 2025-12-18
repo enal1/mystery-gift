@@ -36,47 +36,20 @@
           <p>点击打开贺卡</p>
         </div>
         <div class="card-back">
-          <div class="birthday-card-content">
-            <!-- 可点击的蛋糕 -->
-            <div 
-              v-if="!isExploded"
-              class="birthday-cake-interactive"
-              @click="handleCakeClick"
-              :style="{ scale: cakeClickCount > 0 ? 1 + (cakeClickCount * 0.05) : 1 }"
-            >🎂</div>
-            
-            <!-- 爆炸后的效果 -->
-            <div 
-              v-else
-              class="birthday-cake-exploded"
-            >🧁</div>
-            
-            <!-- 奶油覆盖效果 -->
-            <div 
-              v-if="hasCream"
-              class="cream-overlay"
-              :class="{ 'fading': isCreamFading }"
-            >
-              <div class="cream-spread">🍰</div>
-            </div>
-            
-            <!-- 最终显示的文字 -->
-            <div 
-              v-if="isTextVisible"
-              class="final-text"
-            >
-              <h3>{{ finalText }}</h3>
-              <div class="card-signature">🎁 来自神秘朋友</div>
-            </div>
-            
-            <!-- 蛋糕未爆炸时的提示文字 -->
-            <div 
-              v-if="!isExploded && !isTextVisible"
-              class="cake-instruction"
-            >
-              <p>点击蛋糕 {{ maxCakeClicks - cakeClickCount }} 次</p>
+          <div class="card-decoration">
+            <div class="birthday-cake-small">🎂</div>
+            <div class="confetti-small">
+              <div 
+                v-for="i in confettiSmallCount" 
+                :key="`confetti-small-${i}`"
+                class="confetti-piece-small"
+                :style="getConfettiStyle(i)"
+              ></div>
             </div>
           </div>
+          <h3>祝你生日快乐！</h3>
+          <p>愿你的每一天都充满快乐和惊喜！</p>
+          <div class="card-signature">🎁 来自神秘朋友</div>
         </div>
       </div>
     </div>
@@ -117,6 +90,17 @@
           <p>点击打开贺卡</p>
         </div>
         <div class="card-back">
+          <div class="card-decoration">
+            <div class="christmas-tree-small">🎄</div>
+            <div class="snowflakes-small">
+              <div 
+                v-for="i in snowflakeSmallCount" 
+                :key="`snowflake-small-${i}`"
+                class="snowflake-small"
+                :style="getSnowflakeStyle(i)"
+              >❄️</div>
+            </div>
+          </div>
           <h3>节日快乐！</h3>
           <p>愿这个节日充满爱与温暖！</p>
           <div class="card-signature">🎄 来自神秘朋友</div>
@@ -160,6 +144,17 @@
           <p>点击打开贺卡</p>
         </div>
         <div class="card-back">
+          <div class="card-decoration">
+            <div class="thankyou-icon-small">🙏</div>
+            <div class="hearts-small">
+              <div 
+                v-for="i in heartSmallCount" 
+                :key="`heart-small-${i}`"
+                class="heart-small"
+                :style="getHeartStyle(i)"
+              >❤️</div>
+            </div>
+          </div>
           <h3>非常感谢！</h3>
           <p>感谢你一直以来的支持和帮助！</p>
           <div class="card-signature">🙏 来自神秘朋友</div>
@@ -203,6 +198,17 @@
           <p>点击打开贺卡</p>
         </div>
         <div class="card-back">
+          <div class="card-decoration">
+            <div class="love-hearts-small">❤️</div>
+            <div class="sparkles-small">
+              <div 
+                v-for="i in sparkleSmallCount" 
+                :key="`sparkle-small-${i}`"
+                class="sparkle-small"
+                :style="getSparkleStyle(i)"
+              >✨</div>
+            </div>
+          </div>
           <h3>亲爱的，</h3>
           <p>你是我生命中最美好的礼物！</p>
           <div class="card-signature">❤️ 来自神秘爱人</div>
@@ -276,13 +282,16 @@ const bubbleCount = ref(8)
 const starCount = ref(15)
 const petalCount = ref(12)
 const fireflyCount = ref(10)
+// 卡片背面装饰元素数量
+const confettiSmallCount = ref(8)
+const snowflakeSmallCount = ref(6)
+const heartSmallCount = ref(8)
+const sparkleSmallCount = ref(12)
 
 // 音频状态
 const isMusicPlaying = ref(false)
 const bgMusic = ref(null)
 const flipSound = ref(null)
-const explosionSound = ref(null)
-const creamSound = ref(null)
 
 // 触摸事件处理
 const touchStartX = ref(0)
@@ -293,15 +302,6 @@ const isTouchEvent = ref(false) // 用于跟踪最后一个事件是否为触摸
 // 提示弹窗
 const popups = ref([])
 let popupId = 0
-
-// 生日贺卡特殊状态
-const cakeClickCount = ref(0)
-const isExploded = ref(false)
-const hasCream = ref(false)
-const isCreamFading = ref(false)
-const isTextVisible = ref(false)
-const finalText = ref('生日快乐！愿你每天都开心！')
-const maxCakeClicks = ref(3)
 
 // 容器样式
 const containerStyle = computed(() => {
@@ -344,6 +344,11 @@ const adjustDecorationCount = () => {
   starCount.value = Math.floor(15 * countRatio)
   petalCount.value = Math.floor(12 * countRatio)
   fireflyCount.value = Math.floor(10 * countRatio)
+  // 卡片背面装饰元素
+  confettiSmallCount.value = Math.floor(8 * countRatio)
+  snowflakeSmallCount.value = Math.floor(6 * countRatio)
+  heartSmallCount.value = Math.floor(8 * countRatio)
+  sparkleSmallCount.value = Math.floor(12 * countRatio)
 }
 
 // 初始化音频
@@ -358,16 +363,6 @@ const initAudio = () => {
   flipSound.value = new Audio('https://assets.mixkit.co/active_storage/sfx/2167/2167-preview.mp3')
   flipSound.value.volume = 0.5
   flipSound.value.preload = 'metadata'
-  
-  // 爆炸音效
-  explosionSound.value = new Audio('https://assets.mixkit.co/active_storage/sfx/2440/2440-preview.mp3')
-  explosionSound.value.volume = 0.6
-  explosionSound.value.preload = 'metadata'
-  
-  // 奶油音效
-  creamSound.value = new Audio('https://assets.mixkit.co/active_storage/sfx/2222/2222-preview.mp3')
-  creamSound.value.volume = 0.5
-  creamSound.value.preload = 'metadata'
 }
 
 // 播放背景音乐
@@ -405,77 +400,6 @@ const playFlipSound = () => {
   
   flipSound.value.currentTime = 0
   flipSound.value.play().catch(err => console.log('播放翻页音效失败:', err))
-}
-
-// 播放爆炸音效
-const playExplosionSound = () => {
-  if (!explosionSound.value) return
-  
-  explosionSound.value.currentTime = 0
-  explosionSound.value.play().catch(err => console.log('播放爆炸音效失败:', err))
-}
-
-// 播放奶油音效
-const playCreamSound = () => {
-  if (!creamSound.value) return
-  
-  creamSound.value.currentTime = 0
-  creamSound.value.play().catch(err => console.log('播放奶油音效失败:', err))
-}
-
-// 处理蛋糕点击
-const handleCakeClick = (e) => {
-  if (props.template !== 'birthday' || !isFlipped.value) return
-  
-  e.stopPropagation()
-  
-  if (!isExploded.value) {
-    cakeClickCount.value++
-    
-    // 如果点击次数达到最大值，触发爆炸
-    if (cakeClickCount.value >= maxCakeClicks.value) {
-      triggerExplosion()
-    }
-  }
-}
-
-// 触发爆炸效果
-const triggerExplosion = () => {
-  isExploded.value = true
-  playExplosionSound()
-  
-  // 爆炸后延迟添加奶油
-  setTimeout(() => {
-    addCream()
-  }, 500)
-}
-
-// 添加奶油效果
-const addCream = () => {
-  hasCream.value = true
-  playCreamSound()
-  
-  // 奶油延迟退去
-  setTimeout(() => {
-    fadeCream()
-  }, 2000)
-}
-
-// 奶油退去效果
-const fadeCream = () => {
-  isCreamFading.value = true
-  
-  // 奶油退去后显示文字
-  setTimeout(() => {
-    hasCream.value = false
-    isCreamFading.value = false
-    showFinalText()
-  }, 1000)
-}
-
-// 显示最终文字
-const showFinalText = () => {
-  isTextVisible.value = true
 }
 
 // 贺卡翻页处理
@@ -799,122 +723,105 @@ onUnmounted(() => {
   z-index: 1;
 }
 
-/* 生日贺卡交互样式 */
-.birthday-card-content {
+/* 背面装饰元素 */
+.birthday-cake-small, .christmas-tree-small, .thankyou-icon-small, .love-hearts-small {
+  font-size: 40px;
+  margin-bottom: 10px;
   position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  z-index: 1;
+  animation: bounce 2s ease-in-out infinite;
 }
 
-.birthday-cake-interactive {
-  font-size: 120px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  z-index: 2;
-  transform-origin: center;
-}
-
-.birthday-cake-interactive:hover {
-  transform: scale(1.1);
-}
-
-.birthday-cake-exploded {
-  font-size: 140px;
-  position: relative;
-  z-index: 2;
-  animation: explode-scale 0.5s ease;
-}
-
-@keyframes explode-scale {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.cream-overlay {
+/* 小彩带动画 */
+.confetti-small {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 3;
-  animation: cream-spread 0.5s ease forwards;
+  overflow: hidden;
 }
 
-.cream-overlay.fading {
-  animation: cream-fade 1s ease forwards;
+.confetti-piece-small {
+  position: absolute;
+  top: -10%;
+  background-color: var(--birthday-primary);
+  animation: confetti-fall linear infinite;
+  will-change: transform, opacity;
+  width: 4px;
+  height: 10px;
 }
 
-.cream-spread {
-  font-size: 200px;
+/* 小雪花动画 */
+.snowflakes-small {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.snowflake-small {
+  position: absolute;
+  top: -10%;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  animation: snowfall linear infinite;
+  will-change: transform, opacity;
+  font-size: 15px;
+  opacity: 0.7;
+}
+
+/* 小爱心动画 */
+.hearts-small {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.heart-small {
+  position: absolute;
+  top: -10%;
+  color: #ff6b81;
+  animation: heart-float linear infinite;
+  will-change: transform, opacity;
+  font-size: 15px;
   opacity: 0.8;
-  animation: cream-bounce 1.5s ease infinite;
 }
 
-@keyframes cream-spread {
-  0% { transform: scale(0); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+/* 小火花动画 */
+.sparkles-small {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-@keyframes cream-fade {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+.sparkle-small {
+  position: absolute;
+  top: -10%;
+  color: #ffd700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  animation: sparkle-float linear infinite;
+  will-change: transform, opacity;
+  font-size: 12px;
+  opacity: 0.8;
 }
 
-@keyframes cream-bounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.final-text {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  animation: text-appear 0.8s ease forwards;
-}
-
-.final-text h3 {
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: 20px;
-  color: #ff6b6b;
-}
-
-.final-text .card-signature {
-  margin-top: 30px;
-  font-size: 16px;
-  color: #666;
-}
-
-@keyframes text-appear {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.cake-instruction {
-  margin-top: 20px;
-  position: relative;
-  z-index: 2;
-}
-
-.cake-instruction p {
-  font-size: 18px;
-  color: #666;
-  animation: pulse 1s ease infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
+/* 弹跳动画 */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* 彩纸动画 */
@@ -1006,6 +913,8 @@ onUnmounted(() => {
   margin-bottom: 20px;
   position: relative;
   z-index: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  line-height: 1.2;
 }
 
 .card p {
@@ -1013,6 +922,8 @@ onUnmounted(() => {
   margin-bottom: 20px;
   position: relative;
   z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  line-height: 1.5;
 }
 
 .card-signature {
@@ -1021,6 +932,7 @@ onUnmounted(() => {
   color: var(--subtext);
   position: relative;
   z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* 控制按钮 */
